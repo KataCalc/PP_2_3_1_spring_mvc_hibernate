@@ -5,9 +5,7 @@ import net.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,35 +19,43 @@ public class MyController {
         this.userService = userService;
     }
 
-    @RequestMapping("/")
-    public String showAllEmployees(Model model) {
-
+    @GetMapping(value = "/")
+    public String showAllUsers(Model model) {
         List<User> allUsers = userService.allUsers();
         model.addAttribute("allUs", allUsers);
         return "all-user";
     }
 
-    @RequestMapping("/addNewUser")
+    @GetMapping (value = "/addNewUser")
     public String addNewUser(Model model) {
         User user1 = new User();
         model.addAttribute("user1", user1);
         return "user-info";
     }
 
-    @RequestMapping("/saveUser")
+    @PostMapping  (value = "/saveUser")
     public String saveUser(@ModelAttribute("user1") User user) {
-        userService.add(user);
+        userService.saveUser(user);
         return "redirect:/";
     }
 
-    @RequestMapping("/updateInfo")
+    @PostMapping  (value = "/getUser")
+    public String getUser(@ModelAttribute("user1") User user) {
+        userService.saveUser(user);
+        return "redirect:/";
+    }
+
+
+    @RequestMapping(value = "/updateInfo")
     public String updateUser(@RequestParam("usId") int id, Model model) {
-        User user = userService.getById(id);
+        User user = userService.getUser(id);
         model.addAttribute("user1", user);
+        if (id!=0)
+        return "user-info2";
         return "user-info";
     }
 
-    @RequestMapping("/deleteUser")
+    @GetMapping(value = "/deleteUser")
     public String deleteUser(@RequestParam("usId") int id) {
         userService.delete(id);
         return "redirect:/";

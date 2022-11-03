@@ -13,7 +13,8 @@
 <br>
 </body>
 
-<form:form action="saveUser" modelAttribute="user1">
+<%--@elvariable id="user1" type="java"--%>
+<form:form action="getUser" modelAttribute="user1">
 
     <form:hidden path="id"/>
     <br><br>
@@ -25,11 +26,10 @@
     Email<form:input path="email"/>
 
     <br><br>
-    <input type="submit" value="OK">
+    <input type="submit" value="OK2">
 
 </form:form>
 
 
 </html>
-
 

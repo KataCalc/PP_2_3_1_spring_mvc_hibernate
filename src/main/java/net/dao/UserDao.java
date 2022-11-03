@@ -13,4 +13,9 @@ public interface UserDao {
 
     User getById(int id);
 
+    void saveUser(User user);
+
+    User getUser(Integer id);
+
+
 }

@@ -22,10 +22,21 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public void add(User user) {
-        Session session = entityManager.unwrap(Session.class);
-        session.saveOrUpdate(user);
+        entityManager.persist(user);
     }
 
+
+    @Override
+    public void saveUser(User user) {
+        User newUser = entityManager.merge(user);
+        user.setId(newUser.getId());
+    }
+
+    @Override
+    public User getUser(Integer id) {
+        User user = entityManager.find(User.class, id);
+        return user;
+    }
 
     @Override
     public void delete(int id) {
