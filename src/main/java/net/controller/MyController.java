@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class MyController {
 
     private UserService userService;
@@ -19,46 +20,49 @@ public class MyController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping()
     public String showAllUsers(Model model) {
-        List<User> allUsers = userService.allUsers();
-        model.addAttribute("allUs", allUsers);
-        return "all-user";
+        List<User> users = userService.allUsers();
+        model.addAttribute("users", users);
+        return "users/index";
     }
 
-    @GetMapping (value = "/addNewUser")
+    @GetMapping("/{id}")
+    public String showOneUserById(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.getUser(id));
+        return "users/show";
+    }
+
+    @GetMapping(value = "/new")
     public String addNewUser(Model model) {
-        User user1 = new User();
-        model.addAttribute("user1", user1);
-        return "user-info";
+        User user = new User();
+        model.addAttribute("user", user);
+        return "users/new";
     }
 
-    @PostMapping  (value = "/saveUser")
-    public String saveUser(@ModelAttribute("user1") User user) {
+    @PostMapping()
+    public String getUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-    @PostMapping  (value = "/getUser")
-    public String getUser(@ModelAttribute("user1") User user) {
+    @GetMapping("/{id}/edit")
+    public String editUser(Model model, @PathVariable("id") int id) {
+        model.addAttribute("user", userService.getUser(id));
+        return "users/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+        userService.updateUserEndSave(id, user);
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
-
-    @RequestMapping(value = "/updateInfo")
-    public String updateUser(@RequestParam("usId") int id, Model model) {
-        User user = userService.getUser(id);
-        model.addAttribute("user1", user);
-        if (id!=0)
-        return "user-info2";
-        return "user-info";
-    }
-
-    @GetMapping(value = "/deleteUser")
-    public String deleteUser(@RequestParam("usId") int id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteUserByID(@PathVariable(name = "id") int id) {
         userService.delete(id);
-        return "redirect:/";
+        return "redirect:/users";
     }
 
 }

@@ -55,4 +55,13 @@ public class UserServiceImp implements UserService {
     public User getUser(Integer id) {
         return userDao.getUser(id);
     }
+
+    @Override
+    public void updateUserEndSave(int id, User user) {
+        User userToByUpdate = getUser(id);
+        userToByUpdate.setName(user.getName());
+        userToByUpdate.setAge(user.getAge());
+        userToByUpdate.setEmail(user.getEmail());
+
+    }
 }
