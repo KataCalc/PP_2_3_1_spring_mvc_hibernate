@@ -19,7 +19,6 @@ public class UserServiceImp implements UserService {
     }
 
 
-
     @Override
     public List<User> allUsers() {
         return userDao.allUsers();
@@ -39,7 +38,6 @@ public class UserServiceImp implements UserService {
     }
 
 
-
     @Override
     public User getById(int id) {
         return userDao.getById(id);
@@ -56,12 +54,13 @@ public class UserServiceImp implements UserService {
         return userDao.getUser(id);
     }
 
+    @Transactional
     @Override
     public void updateUserEndSave(int id, User user) {
         User userToByUpdate = getUser(id);
         userToByUpdate.setName(user.getName());
         userToByUpdate.setAge(user.getAge());
         userToByUpdate.setEmail(user.getEmail());
-
+        userDao.saveUser(userToByUpdate);
     }
 }

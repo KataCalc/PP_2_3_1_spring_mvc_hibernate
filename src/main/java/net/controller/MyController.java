@@ -55,7 +55,6 @@ public class MyController {
     @PatchMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") int id) {
         userService.updateUserEndSave(id, user);
-        userService.saveUser(user);
         return "redirect:/users";
     }
 
